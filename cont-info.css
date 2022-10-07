@@ -1,0 +1,7 @@
+	.contact-info {margin: 56px 0 0;padding: 0;float: left;width: 100%;}
+	.contact-info .info_icn{margin-bottom:0;}
+	.contact-info p {font-size: 12px; line-height:22px;}
+	.contact-info .info_icn{max-width: 33%;float: left;text-align: center;width: 33%;padding: 0 10px;}
+	.contact-info .icon{position:static;display: inline-block;}
+	.contact-area.sec p {text-align: center !important;}
+	.contact-info strong{font-size:18px;}
