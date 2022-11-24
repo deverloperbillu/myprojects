@@ -199,8 +199,6 @@ CSS
     from {transform: scale(1, 1)}
     to {transform: scale(2, 2)}
 }
-
-
 === Loader HTML CSS And JS ===
 
 <div class="preloader">
@@ -333,6 +331,8 @@ $date = get_the_date('l, F jS, Y');
 ===Custom Slider Class Add Code===
 $(".bestseller .products").addClass("products-slider owl-carousel owl-theme");
 
+===Gallery js Code ===
+$('.gallery-tabs figure#gallery-tab figure.wp-block-image a').attr('data-fancybox', 'gallery');
 
 ===Contact Form7 Form mail===
 <anax@pro.anaxdesigns.website>
@@ -573,3 +573,269 @@ get_footer();
 .single-blog .cont {padding: 19px 10px;}
 .single-blog .cont h4 {margin-bottom: 0; font-size: 24px; font-weight: 700; color: #3944be;}
 .single-blog figcaption {position: absolute; bottom: 0; right: 0; background: #3944be; color: #fff; padding: 10px 20px; z-index: 9;}
+
+
+$( document ).ready( function() {
+		//Hide the field initially
+		$( "#textboxes" ).hide();
+		//Show the text field only when the third option is chosen - this doesn't
+		$( '#selectBox' ).change( function() {
+			if( $( "#selectBox" ).val() == "Other" ) {
+				$("#textboxes").show();
+			}
+			else {
+				$( "#textboxes" ).hide();
+			}
+		} );
+	} );
+	
+=== Contact Form 7 Show Multi Location ===	
+document.addEventListener( 'wpcf7mailsent', function( event ) { 
+	if ( '17748' == event.detail.contactFormId ) {  
+		location = ('https://iotsecure.io/wp-content/uploads/2022/08/Case-Study-IoT-Secure-Healthcare.pdf');	
+	}	else if ( '17754' == event.detail.contactFormId ) { 
+		location = ('https://iotsecure.io/wp-content/uploads/2022/08/Case-Study-IoT-Secure-Mining-Industrial.pdf');	
+	} 
+}, false );	
+
+=== Contact Form 7 Show Single Location ===
+document.addEventListener( 'wpcf7mailsent', function( event ) {
+    location = "https://example.com/thank-you";
+}, false );
+
+
+
+function productsec_section()
+{
+    $string .= '<div class="row">';
+    $args = array(
+        'post_type' => 'product'
+    );
+    $loop = new WP_Query($args);
+    while ($loop->have_posts())
+    {
+        $loop->the_post();
+        $url = wp_get_attachment_url(get_post_thumbnail_id(get_the_id()) , 'thumbnail');
+        $the_title = get_the_title();
+        $the_permalink = get_the_permalink();
+        $content = get_the_content();
+        $the_content = substr($content, 0, 115);
+        $the_excerpt = get_the_excerpt();
+        $string .= '					<div class="col-md-4">				<div class="product">					<img src="' . $url . '">									<h2 class="woocommerce-loop-product__title">' . $the_title . '</h2>					<span class="price"><ins>' . $the_excerpt . '</ins></span>				</div>			            </div>';
+    }
+    $string .= '</div>';
+    return $string;
+}
+add_shortcode('productsec_shortcode', 'productsec_section');
+function productsechome_section()
+{
+    $string .= '<div class="productslider owl-carousel owl-theme">';
+    $args = array(
+        'post_type' => 'product'
+    );
+    $loop = new WP_Query($args);
+    while ($loop->have_posts())
+    {
+        $loop->the_post();
+        $url = wp_get_attachment_url(get_post_thumbnail_id(get_the_id()) , 'thumbnail');
+        $the_title = get_the_title();
+        $the_permalink = get_the_permalink();
+        $content = get_the_content();
+        $the_content = substr($content, 0, 115);
+        $the_excerpt = get_the_excerpt();
+        $string .= '
+
+		<div class="product">
+	<figure><img src="' . $url . '"> </figure>
+	<h2 class="woocommerce-loop-product__title">' . $the_title . '</h2> <span class="price"><ins>' . $the_excerpt . '</ins></span> 
+	
+	</div>';
+	
+	}
+    $string .= '</div>';
+    return $string;
+}
+add_shortcode('productsechome_shortcode', 'productsechome_section');
+
+
+/*==== Our Product  ======*/
+function product_posttype()
+{
+    register_post_type('product', array(
+        'labels' => array(
+            'name' => __('Our product') ,
+            'singular_name' => __('product')
+        ) ,
+        'taxonomies' => array(
+            'product-category'
+        ) ,
+        'public' => true,
+        'has_archive' => true,
+        'rewrite' => array(
+            'slug' => 'product'
+        ) ,
+    ));
+}
+add_action('init', 'product_posttype');
+function product_post_type()
+{
+    $labels = array(
+        'name' => _x('product', 'Post Type General Name', 'twentythirteen') ,
+        'singular_name' => _x('product', 'Post Type Singular Name', 'twentythirteen') ,
+        'menu_name' => __('product', 'twentythirteen') ,
+        'parent_item_colon' => __('Parent product', 'twentythirteen') ,
+        'all_items' => __('All product', 'twentythirteen') ,
+        'view_item' => __('View product', 'twentythirteen') ,
+        'add_new_item' => __('Add New product', 'twentythirteen') ,
+        'add_new' => __('Add New', 'twentythirteen') ,
+        'edit_item' => __('Edit product', 'twentythirteen') ,
+        'update_item' => __('Update product', 'twentythirteen') ,
+        'search_items' => __('Search product', 'twentythirteen') ,
+        'not_found' => __('Not Found', 'twentythirteen') ,
+        'not_found_in_trash' => __('Not found in Trash', 'twentythirteen') ,
+    );
+    $args = array(
+        'label' => __('product', 'twentythirteen') ,
+        'description' => __('product news and reviews', 'twentythirteen') ,
+        'labels' => $labels,
+        'supports' => array(
+            'title',
+            'thumbnail',
+            'excerpt'
+        ) ,
+        'taxonomies' => array(
+            'genres'
+        ) ,
+        'hierarchical' => true,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'menu_position' => 5,
+        'can_export' => true,
+        'has_archive' => "product",
+        'exclude_from_search' => false,
+        'publicly_queryable' => true,
+        'capability_type' => 'page',
+        'taxonomies' => array(
+            'category'
+        ) ,
+    );
+    register_post_type('product', $args);
+}
+add_action('init', 'product_post_type', 0);
+
+
+
+<?php
+/* Start the Loop */
+while ( have_posts() ) :
+	the_post();
+
+	get_template_part( 'template-parts/content/content-single' );
+
+endwhile; // End of the loop.
+?>
+
+
+=== Past Single.php ===
+gt_set_post_view();
+
+=== Past This Code Where Show Views ===
+<?= gt_get_post_view(); ?>
+
+=== Past This Code in Function.php ===
+function gt_get_post_view() {
+    $count = get_post_meta( get_the_ID(), 'post_views_count', true );
+    return "$count views";
+}
+function gt_set_post_view() {
+    $key = 'post_views_count';
+    $post_id = get_the_ID();
+    $count = (int) get_post_meta( $post_id, $key, true );
+    $count++;
+    update_post_meta( $post_id, $key, $count );
+}
+function gt_posts_column_views( $columns ) {
+    $columns['post_views'] = 'Views';
+    return $columns;
+}
+function gt_posts_custom_column_views( $column ) {
+    if ( $column === 'post_views') {
+        echo gt_get_post_view();
+    }
+}
+
+=== Start Post type View Shows===
+add_filter( 'manage_posts_columns', 'gt_posts_column_views' );
+add_action( 'manage_posts_custom_column', 'gt_posts_custom_column_views' );
+=== End Post type View Shows===
+ 
+=== Start Custom Post Different Design Code ===
+<div class="blog-posts">
+		<div class="container">
+			<div class="row">
+				<?php  		
+					$i = 1;
+					$count = 1;
+					$args = array('post_type' => 'post', 'posts_per_page' => '50' ); 
+					$loop = new WP_Query( $args );
+					while( $loop->have_posts()): $loop->the_post(); 
+					$url=wp_get_attachment_url( get_post_thumbnail_id(get_the_id()),'thumbnail');
+					if($count == 1){  $class = 'content'; ?>
+					<div class="col-md-12 <?php echo $class;?>">
+						<div class="blog-box">
+							<div class="thumb">
+								<img src="<?php echo $url ?>">
+							</div>
+							<div class="info">
+								<h4><?php echo get_the_title(); ?></h4>
+							</div>
+						</div>
+					</div>
+				
+				<?php }else if($count == 2){ $class = 'content'; ?>
+					<div class="col-md-4 <?php echo $class;?>">
+						<div class="blog-box">
+							<div class="thumb">
+								<img src="<?php echo $url ?>">
+							</div>
+							<div class="info">
+								<h4><?php echo get_the_title(); ?></h4>
+							</div>
+						</div>
+					</div>					
+				
+				<?php }else if($count == 3){ $class = 'content'; ?>
+					<div class="col-md-8 <?php echo $class;?>">
+						<div class="blog-box">
+							<div class="thumb">
+								<img src="<?php echo $url ?>">
+							</div>
+							<div class="info">
+								<h4><?php echo get_the_title(); ?></h4>
+							</div>
+						</div>
+					</div>					
+				
+				<?php $count = 0; } $i++; $count++; endwhile; ?>
+		</div>
+			<a href="#" id="loadMore">Load More</a>
+		</div>
+	</div>
+
+=== End Custom Post Different Design Code ===
+	
+=== Start Custom Post Loadmore Post Show Code jQuery===
+$(document).ready(function(){
+		  $(".content").slice(0,3).show();
+		  $("#loadMore").on("click", function(e){
+			e.preventDefault();
+			$(".content:hidden").slice(0, 3).slideDown();
+			if($(".content:hidden").length == 0) {
+			  $("#loadMore").text("No Content").addClass("noContent");
+			}
+		  });
+		})
+=== End Custom Post Loadmore Post Show Code jQuery===
