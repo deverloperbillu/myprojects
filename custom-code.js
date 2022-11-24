@@ -739,13 +739,15 @@ endwhile; // End of the loop.
 ?>
 
 
-=== Past Single.php ===
+=== Start Past Single.php ===
 gt_set_post_view();
+=== End Past Single.php ===
 
-=== Past This Code Where Show Views ===
+=== Start Past This Code Where Show Views ===
 <?= gt_get_post_view(); ?>
+=== End Past This Code Where Show Views ===
 
-=== Past This Code in Function.php ===
+=== Start Past This Code in Function.php ===
 function gt_get_post_view() {
     $count = get_post_meta( get_the_ID(), 'post_views_count', true );
     return "$count views";
@@ -767,10 +769,10 @@ function gt_posts_custom_column_views( $column ) {
     }
 }
 
-=== Start Post type View Shows===
 add_filter( 'manage_posts_columns', 'gt_posts_column_views' );
 add_action( 'manage_posts_custom_column', 'gt_posts_custom_column_views' );
-=== End Post type View Shows===
+
+=== End This Code in Function.php===
  
 === Start Custom Post Different Design Code ===
 <div class="blog-posts">
